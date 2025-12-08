@@ -1,10 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.Map" %>
+<%@ page import="dao.EstadisticasDAO" %>
+<%@ page import="java.text.DecimalFormat" %>
 <%
     if (session.getAttribute("usuario") == null) {
         response.sendRedirect(request.getContextPath() + "/index.jsp");
         return;
     }
     String usuarioLogueado = (String) session.getAttribute("usuario");
+    
+    // Obtener estadísticas
+    EstadisticasDAO estadisticasDAO = new EstadisticasDAO();
+    Map<String, Double> tiempoPromedio = estadisticasDAO.obtenerTiempoPromedioReparacion();
+    Map<String, Object> cumplimiento = estadisticasDAO.obtenerCumplimientoPreventivos();
+    Map<String, Object> consumoInsumos = estadisticasDAO.obtenerConsumoInsumos();
+    Map<String, Object> rotacionStock = estadisticasDAO.obtenerRotacionStock();
+    Map<String, Integer> alertas = estadisticasDAO.obtenerAlertasCriticas();
+    
+    DecimalFormat df = new DecimalFormat("#,##0.00");
+    DecimalFormat dfEntero = new DecimalFormat("#,##0");
 %>
 <!DOCTYPE html>
 <html lang="es">
@@ -243,171 +257,173 @@
             color: #6c757d;
         }
         
-        .dashboard-grid {
+        .stats-grid {
             display: grid;
-            grid-template-columns: 1fr 350px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
         
-        .alerts-section {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .alert-card {
+        .stat-card {
             background-color: white;
-            border-radius: 8px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 25px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            border-left: 4px solid #dc3545;
+            border-left: 4px solid #0066cc;
+            transition: all 0.3s ease;
         }
         
-        .alert-card.warning {
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+        
+        .stat-card.warning {
             border-left-color: #ffc107;
         }
         
-        .alert-card.info {
-            border-left-color: #17a2b8;
+        .stat-card.success {
+            border-left-color: #28a745;
         }
         
-        .alert-header {
+        .stat-card.danger {
+            border-left-color: #dc3545;
+        }
+        
+        .stat-icon {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+        
+        .stat-title {
+            font-size: 13px;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #212529;
+            margin-bottom: 10px;
+        }
+        
+        .stat-description {
+            font-size: 13px;
+            color: #6c757d;
+            line-height: 1.5;
+        }
+        
+        .stat-detail {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .stat-detail-item {
             display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 12px;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 12px;
         }
         
-        .alert-icon {
-            font-size: 24px;
+        .stat-detail-label {
+            color: #6c757d;
         }
         
-        .alert-title {
-            font-size: 16px;
+        .stat-detail-value {
             font-weight: 600;
             color: #212529;
         }
         
-        .alert-content {
-            font-size: 14px;
-            color: #495057;
-            margin-bottom: 15px;
-            line-height: 1.6;
-        }
-        
-        .alert-details {
-            font-size: 13px;
-            color: #6c757d;
+        .progress-bar-custom {
+            height: 8px;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
             margin-top: 8px;
         }
         
-        .alert-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0066cc 0%, #0052a3 100%);
+            transition: width 0.3s ease;
         }
         
-        .btn-alert {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            transition: all 0.3s;
+        .progress-fill.warning {
+            background: linear-gradient(90deg, #ffc107 0%, #ff9800 100%);
         }
         
-        .btn-primary-alert {
-            background-color: #0066cc;
-            color: white;
+        .progress-fill.success {
+            background: linear-gradient(90deg, #28a745 0%, #20c997 100%);
         }
         
-        .btn-primary-alert:hover {
-            background-color: #0052a3;
-        }
-        
-        .btn-secondary-alert {
-            background-color: #6c757d;
-            color: white;
-        }
-        
-        .btn-secondary-alert:hover {
-            background-color: #5a6268;
-        }
-        
-        .calendar-card {
+        .alerts-section {
             background-color: white;
-            border-radius: 8px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 25px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            height: fit-content;
         }
         
-        .calendar-header {
-            text-align: center;
-            font-size: 16px;
+        .alerts-title {
+            font-size: 18px;
             font-weight: 600;
             color: #212529;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
-        .calendar {
-            width: 100%;
+        .alert-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border-left: 3px solid #0066cc;
         }
         
-        .calendar-weekdays {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 5px;
-            margin-bottom: 5px;
+        .alert-item.warning {
+            border-left-color: #ffc107;
+            background-color: #fff8e1;
         }
         
-        .calendar-weekday {
-            text-align: center;
-            font-size: 12px;
-            font-weight: 600;
-            color: #6c757d;
-            padding: 8px 0;
+        .alert-item.danger {
+            border-left-color: #dc3545;
+            background-color: #fff5f5;
         }
         
-        .calendar-days {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 5px;
-        }
-        
-        .calendar-day {
-            aspect-ratio: 1;
+        .alert-icon-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 13px;
-            color: #495057;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
+            font-size: 20px;
+            background-color: white;
         }
         
-        .calendar-day:hover {
-            background-color: #e3f2fd;
+        .alert-content {
+            flex-grow: 1;
         }
         
-        .calendar-day.other-month {
-            color: #adb5bd;
+        .alert-text {
+            font-size: 14px;
+            color: #212529;
+            font-weight: 500;
         }
         
-        .calendar-day.today {
-            background-color: #0066cc;
-            color: white;
-            font-weight: 600;
-        }
-        
-        .calendar-day.has-event {
-            background-color: #fff3cd;
-            font-weight: 600;
+        .alert-subtext {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 3px;
         }
     </style>
 </head>
@@ -453,79 +469,197 @@
         <div class="content-area">
             <div class="page-header">
                 <h1 class="page-title">Dashboard Principal</h1>
-                <p class="page-subtitle">Resumen de alertas y notificaciones importantes</p>
+                <p class="page-subtitle">Resumen de estadísticas y métricas clave del sistema</p>
             </div>
             
-            <div class="dashboard-grid">
-                <div class="alerts-section">
-                    <!-- Tiempo promedio de reparación por técnico -->
-                    <div class="alert-card">
-                        <div class="alert-header">
-                            <span class="alert-icon">⏱️</span>
-                            <span class="alert-title">Tiempo promedio de reparación por técnico</span>
+            <!-- KPIs Principales -->
+            <div class="stats-grid">
+                <!-- Tiempo promedio de reparación -->
+                <div class="stat-card">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-title">Tiempo Promedio de Reparación</div>
+                    <%
+                    if (tiempoPromedio != null && !tiempoPromedio.isEmpty()) {
+                        double promTotal = tiempoPromedio.values().stream().mapToDouble(Double::doubleValue).average().orElse(0);
+                    %>
+                        <div class="stat-value"><%= df.format(promTotal) %> días</div>
+                        <div class="stat-description">Promedio general de todos los técnicos</div>
+                        <div class="stat-detail">
+                            <% for (Map.Entry<String, Double> entry : tiempoPromedio.entrySet()) { %>
+                                <div class="stat-detail-item">
+                                    <span class="stat-detail-label"><%= entry.getKey() %></span>
+                                    <span class="stat-detail-value"><%= df.format(entry.getValue()) %> días</span>
+                                </div>
+                            <% } %>
                         </div>
-                        <div class="alert-content">
-                            <!-- Datos se cargarán desde la BD -->
-                        </div>
-                    </div>
-
-                    <!-- Cumplimiento de mantenimientos preventivos -->
-                    <div class="alert-card warning">
-                        <div class="alert-header">
-                            <span class="alert-icon">✅</span>
-                            <span class="alert-title">Cumplimiento de mantenimientos preventivos</span>
-                        </div>
-                        <div class="alert-content">
-                            <!-- Datos se cargarán desde la BD -->
-                        </div>
-                    </div>
-
-                    <!-- Consumo promedio de insumos por unidad -->
-                    <div class="alert-card info">
-                        <div class="alert-header">
-                            <span class="alert-icon">📦</span>
-                            <span class="alert-title">Consumo promedio de insumos por unidad</span>
-                        </div>
-                        <div class="alert-content">
-                            <!-- Datos se cargarán desde la BD -->
-                        </div>
-                    </div>
-
-                    <!-- Nivel de rotación de stock -->
-                    <div class="alert-card">
-                        <div class="alert-header">
-                            <span class="alert-icon">🔄</span>
-                            <span class="alert-title">Nivel de rotación de stock</span>
-                        </div>
-                        <div class="alert-content">
-                            <!-- Datos se cargarán desde la BD -->
-                        </div>
-                    </div>
+                    <% } else { %>
+                        <div class="stat-value">N/A</div>
+                        <div class="stat-description">No hay datos suficientes</div>
+                    <% } %>
                 </div>
+
+                <!-- Cumplimiento de preventivos -->
+                <div class="stat-card success">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-title">Cumplimiento Mantenimientos Preventivos</div>
+                    <%
+                    if (cumplimiento != null && !cumplimiento.isEmpty()) {
+                        double porcentaje = (Double) cumplimiento.get("porcentaje");
+                        int total = (Integer) cumplimiento.get("total");
+                        int completados = (Integer) cumplimiento.get("completados");
+                    %>
+                        <div class="stat-value"><%= df.format(porcentaje) %>%</div>
+                        <div class="stat-description"><%= completados %> de <%= total %> mantenimientos completados</div>
+                        <div class="progress-bar-custom">
+                            <div class="progress-fill success" style="width: <%= porcentaje %>%"></div>
+                        </div>
+                        <div class="stat-detail">
+                            <div class="stat-detail-item">
+                                <span class="stat-detail-label">Completados</span>
+                                <span class="stat-detail-value"><%= completados %></span>
+                            </div>
+                            <div class="stat-detail-item">
+                                <span class="stat-detail-label">En Proceso</span>
+                                <span class="stat-detail-value"><%= cumplimiento.get("enProceso") %></span>
+                            </div>
+                            <div class="stat-detail-item">
+                                <span class="stat-detail-label">Abiertas</span>
+                                <span class="stat-detail-value"><%= cumplimiento.get("abiertas") %></span>
+                            </div>
+                        </div>
+                    <% } else { %>
+                        <div class="stat-value">N/A</div>
+                    <% } %>
+                </div>
+
+                <!-- Consumo de insumos -->
+                <div class="stat-card warning">
+                    <div class="stat-icon">📦</div>
+                    <div class="stat-title">Consumo Promedio de Insumos</div>
+                    <%
+                    if (consumoInsumos != null && !consumoInsumos.isEmpty()) {
+                        double promedioRepuestos = (Double) consumoInsumos.get("promedioRepuestos");
+                        double totalRepuestos = (Double) consumoInsumos.get("totalRepuestos");
+                        int totalVehiculos = (Integer) consumoInsumos.get("totalVehiculos");
+                    %>
+                        <div class="stat-value">S/ <%= df.format(promedioRepuestos) %></div>
+                        <div class="stat-description">Por vehículo (últimos 6 meses)</div>
+                        <div class="stat-detail">
+                            <div class="stat-detail-item">
+                                <span class="stat-detail-label">Total Gastado</span>
+                                <span class="stat-detail-value">S/ <%= dfEntero.format(totalRepuestos) %></span>
+                            </div>
+                            <div class="stat-detail-item">
+                                <span class="stat-detail-label">Vehículos</span>
+                                <span class="stat-detail-value"><%= totalVehiculos %></span>
+                            </div>
+                        </div>
+                    <% } else { %>
+                        <div class="stat-value">N/A</div>
+                    <% } %>
+                </div>
+
+                <!-- Rotación de stock -->
+                <div class="stat-card danger">
+                    <div class="stat-icon">🔄</div>
+                    <div class="stat-title">Nivel de Rotación de Stock</div>
+                    <%
+                    if (rotacionStock != null && !rotacionStock.isEmpty()) {
+                        int bajoStock = (Integer) rotacionStock.get("bajoStock");
+                        int totalProductos = (Integer) rotacionStock.get("totalProductos");
+                        int stockTotal = (Integer) rotacionStock.get("stockTotal");
+                        double porcentajeBajo = totalProductos > 0 ? (bajoStock * 100.0 / totalProductos) : 0;
+                    %>
+                        <div class="stat-value"><%= bajoStock %> productos</div>
+                        <div class="stat-description">Con stock bajo o crítico (<%= df.format(porcentajeBajo) %>%)</div>
+                        <div class="progress-bar-custom">
+                            <div class="progress-fill warning" style="width: <%= porcentajeBajo %>%"></div>
+                        </div>
+                        <div class="stat-detail">
+                            <div class="stat-detail-item">
+                                <span class="stat-detail-label">Total Productos</span>
+                                <span class="stat-detail-value"><%= totalProductos %></span>
+                                </div>
+                        <div class="stat-detail-item">
+                            <span class="stat-detail-label">Stock Total</span>
+                            <span class="stat-detail-value"><%= dfEntero.format(stockTotal) %> unidades</span>
+                        </div>
+                    </div>
+                <% } else { %>
+                    <div class="stat-value">N/A</div>
+                <% } %>
             </div>
         </div>
+        
+        <!-- Alertas y Notificaciones -->
+        <div class="alerts-section">
+            <h2 class="alerts-title">🔔 Alertas y Notificaciones</h2>
+            
+            <% if (alertas != null && !alertas.isEmpty()) { %>
+                <% if (alertas.get("mantenimientosVencidos") > 0) { %>
+                    <div class="alert-item danger">
+                        <div class="alert-icon-circle">⚠️</div>
+                        <div class="alert-content">
+                            <div class="alert-text"><%= alertas.get("mantenimientosVencidos") %> mantenimientos próximos a vencer</div>
+                            <div class="alert-subtext">Requieren atención en los próximos 7 días</div>
+                        </div>
+                    </div>
+                <% } %>
+                
+                <% if (alertas.get("ordenesAbiertas") > 0) { %>
+                    <div class="alert-item warning">
+                        <div class="alert-icon-circle">📋</div>
+                        <div class="alert-content">
+                            <div class="alert-text"><%= alertas.get("ordenesAbiertas") %> órdenes de trabajo abiertas</div>
+                            <div class="alert-subtext">Pendientes de asignación o inicio</div>
+                        </div>
+                    </div>
+                <% } %>
+                
+                <% if (alertas.get("productosBajoStock") > 0) { %>
+                    <div class="alert-item danger">
+                        <div class="alert-icon-circle">📦</div>
+                        <div class="alert-content">
+                            <div class="alert-text"><%= alertas.get("productosBajoStock") %> productos con stock bajo</div>
+                            <div class="alert-subtext">Se recomienda realizar pedido de reposición</div>
+                        </div>
+                    </div>
+                <% } %>
+                
+                <% if (alertas.get("mantenimientosVencidos") == 0 && 
+                      alertas.get("ordenesAbiertas") == 0 && 
+                      alertas.get("productosBajoStock") == 0) { %>
+                    <div class="alert-item">
+                        <div class="alert-icon-circle">✅</div>
+                        <div class="alert-content">
+                            <div class="alert-text">Todo al día</div>
+                            <div class="alert-subtext">No hay alertas críticas en este momento</div>
+                        </div>
+                    </div>
+                <% } %>
+            <% } %>
+        </div>
     </div>
+</div>
+
+<script>
+    const userMenuBtn = document.getElementById('userMenuBtn');
+    const userDropdown = document.getElementById('userDropdown');
     
-    <script>
-        const userMenuBtn = document.getElementById('userMenuBtn');
-        const userDropdown = document.getElementById('userDropdown');
-        
-        userMenuBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            userDropdown.classList.toggle('show');
-        });
-        
-        document.addEventListener('click', function(e) {
-            if (!userDropdown.contains(e.target) && e.target !== userMenuBtn) {
-                userDropdown.classList.remove('show');
-            }
-        });
-        
-        function cerrarSesion() {
-            if (confirm('¿Está seguro que desea cerrar sesión?')) {
-                window.location.href = '../LogoutServlet';
-            }
+    userMenuBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        userDropdown.classList.toggle('show');
+    });
+    
+    document.addEventListener('click', function(e) {
+        if (!userDropdown.contains(e.target) && e.target !== userMenuBtn) {
+            userDropdown.classList.remove('show');
         }
-    </script>
-</body>
-</html>
+    });
+    
+    function cerrarSesion() {
+        if (confirm('¿Está seguro que desea cerrar sesión?')) {
+            window.location.href = '../LogoutServlet';
+        }
+    }
+</script>

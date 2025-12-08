@@ -3,9 +3,18 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/joaquin/Desktop/CARRERA%20DE%20INGENIERIA%20DE%20SISTEMA/CICLO%20AGOSTO%202025/Desarrollo%20web%20integrado/Proyecto%20final/ProyectoFinal/web/Vistas/editarOrden.jsp</file>
+            <file>file:/C:/Users/joaquin/Desktop/CARRERA%20DE%20INGENIERIA%20DE%20SISTEMA/CICLO%20AGOSTO%202025/Desarrollo%20web%20integrado/Proyecto%20final/ProyectoFinal/src/java/servlet/ExportarReportePDFServlet.java</file>
+            <file>file:/C:/Users/joaquin/Desktop/CARRERA%20DE%20INGENIERIA%20DE%20SISTEMA/CICLO%20AGOSTO%202025/Desarrollo%20web%20integrado/Proyecto%20final/ProyectoFinal/src/java/servlet/RegistrarVehiculoServlet.java</file>
             <file>file:/C:/Users/joaquin/Desktop/CARRERA%20DE%20INGENIERIA%20DE%20SISTEMA/CICLO%20AGOSTO%202025/Desarrollo%20web%20integrado/Proyecto%20final/ProyectoFinal/src/java/servlet/ActualizarOrdenServlet.java</file>
             <file>file:/C:/Users/joaquin/Desktop/CARRERA%20DE%20INGENIERIA%20DE%20SISTEMA/CICLO%20AGOSTO%202025/Desarrollo%20web%20integrado/Proyecto%20final/ProyectoFinal/web/Vistas/ordenes.jsp</file>
+            <file>file:/C:/Users/joaquin/Desktop/CARRERA%20DE%20INGENIERIA%20DE%20SISTEMA/CICLO%20AGOSTO%202025/Desarrollo%20web%20integrado/Proyecto%20final/ProyectoFinal/web/Vistas/reportes.jsp</file>
+            <file>file:/C:/Users/joaquin/Desktop/CARRERA%20DE%20INGENIERIA%20DE%20SISTEMA/CICLO%20AGOSTO%202025/Desarrollo%20web%20integrado/Proyecto%20final/ProyectoFinal/src/java/servlet/RegistrarOrdenServlet.java</file>
+            <file>file:/C:/Users/joaquin/Desktop/CARRERA%20DE%20INGENIERIA%20DE%20SISTEMA/CICLO%20AGOSTO%202025/Desarrollo%20web%20integrado/Proyecto%20final/ProyectoFinal/src/java/servlet/ActualizarRepuestoServlet.java</file>
+            <file>file:/C:/Users/joaquin/Desktop/CARRERA%20DE%20INGENIERIA%20DE%20SISTEMA/CICLO%20AGOSTO%202025/Desarrollo%20web%20integrado/Proyecto%20final/ProyectoFinal/src/java/servlet/ExportarReporteExcelServlet.java</file>
+            <file>file:/C:/Users/joaquin/Desktop/CARRERA%20DE%20INGENIERIA%20DE%20SISTEMA/CICLO%20AGOSTO%202025/Desarrollo%20web%20integrado/Proyecto%20final/ProyectoFinal/web/Vistas/inicio.jsp</file>
+            <file>file:/C:/Users/joaquin/Desktop/CARRERA%20DE%20INGENIERIA%20DE%20SISTEMA/CICLO%20AGOSTO%202025/Desarrollo%20web%20integrado/Proyecto%20final/ProyectoFinal/web/Vistas/editarOrden.jsp</file>
+            <file>file:/C:/Users/joaquin/Desktop/CARRERA%20DE%20INGENIERIA%20DE%20SISTEMA/CICLO%20AGOSTO%202025/Desarrollo%20web%20integrado/Proyecto%20final/ProyectoFinal/web/Vistas/registrarOrden.jsp</file>
+            <file>file:/C:/Users/joaquin/Desktop/CARRERA%20DE%20INGENIERIA%20DE%20SISTEMA/CICLO%20AGOSTO%202025/Desarrollo%20web%20integrado/Proyecto%20final/ProyectoFinal/src/java/dao/EstadisticasDAO.java</file>
             <file>file:/C:/Users/joaquin/Desktop/CARRERA%20DE%20INGENIERIA%20DE%20SISTEMA/CICLO%20AGOSTO%202025/Desarrollo%20web%20integrado/Proyecto%20final/ProyectoFinal/web/Vistas/verOrden.jsp</file>
             <file>file:/C:/Users/joaquin/Desktop/CARRERA%20DE%20INGENIERIA%20DE%20SISTEMA/CICLO%20AGOSTO%202025/Desarrollo%20web%20integrado/Proyecto%20final/ProyectoFinal/src/java/servlet/EditarOrdenServlet.java</file>
             <file>file:/C:/Users/joaquin/Desktop/CARRERA%20DE%20INGENIERIA%20DE%20SISTEMA/CICLO%20AGOSTO%202025/Desarrollo%20web%20integrado/Proyecto%20final/ProyectoFinal/src/java/servlet/VerOrdenServlet.java</file>

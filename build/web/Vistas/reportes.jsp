@@ -516,9 +516,9 @@
                 </div>
                 
                 <div style="margin-top: 15px;">
-                    <button class="btn-action">🔍 Generar Reporte</button>
-                    <button class="btn-action btn-secondary">📄 Exportar PDF</button>
-                    <button class="btn-action btn-tertiary">📊 Exportar Excel</button>
+                    <button class="btn-action" onclick="generarReporte()">🔍 Generar Reporte</button>
+                    <button class="btn-action btn-secondary" onclick="exportarPDF()">📄 Exportar PDF</button>
+                    <button class="btn-action btn-tertiary" onclick="exportarExcel()">📊 Exportar Excel</button>
                 </div>
             </div>
             
@@ -769,27 +769,41 @@
             </div>
         </div>
     </div>
-    
     <script>
+        function generarReporte() {
+            // Función existente - no modificar
+            alert('Reporte generado en pantalla');
+        }
+
+        function exportarPDF() {
+            const tipoReporte = document.getElementById('tipoReporte').value;
+            window.location.href = '../ExportarReportePDFServlet?tipo=' + tipoReporte;
+        }
+
+        function exportarExcel() {
+            const tipoReporte = document.getElementById('tipoReporte').value;
+            window.location.href = '../ExportarReporteExcelServlet?tipo=' + tipoReporte;
+        }
+
         function cambiarTipoReporte() {
             const tipoReporte = document.getElementById('tipoReporte').value;
-            
+
             // Ocultar todas las tablas
             document.getElementById('tablaMantenimientos').style.display = 'none';
             document.getElementById('tablaVencimientos').style.display = 'none';
             document.getElementById('tablaValorizado').style.display = 'none';
             document.getElementById('tablaStock').style.display = 'none';
             document.getElementById('tablaProveedores').style.display = 'none';
-            
+
             // Mostrar/ocultar filtros según el tipo de reporte
             const filtroVehiculo = document.getElementById('filtroVehiculo');
             const filtroTecnico = document.getElementById('filtroTecnico');
             const filtroProveedor = document.getElementById('filtroProveedor');
-            
+
             filtroVehiculo.style.display = 'block';
             filtroTecnico.style.display = 'block';
             filtroProveedor.style.display = 'none';
-            
+
             // Mostrar la tabla correspondiente
             switch(tipoReporte) {
                 case 'mantenimientos':
@@ -815,31 +829,26 @@
                     break;
             }
         }
-        
+
         function cerrarSesion() {
             if(confirm('¿Estás seguro de que deseas cerrar sesión?')) {
-                window.location.href = 'login.jsp';
+                window.location.href = '../LogoutServlet';
             }
         }
+
         const userMenuBtn = document.getElementById('userMenuBtn');
         const userDropdown = document.getElementById('userDropdown');
-        
+
         userMenuBtn.addEventListener('click', function(e) {
             e.stopPropagation();
             userDropdown.classList.toggle('show');
         });
-        
+
         document.addEventListener('click', function(e) {
             if (!userDropdown.contains(e.target) && e.target !== userMenuBtn) {
                 userDropdown.classList.remove('show');
             }
         });
-        
-        function cerrarSesion() {
-            if (confirm('¿Está seguro que desea cerrar sesión?')) {
-                window.location.href = '../LogoutServlet';
-            }
-        }
     </script>
 </body>
 </html>
