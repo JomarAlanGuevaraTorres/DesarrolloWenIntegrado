@@ -257,8 +257,8 @@
                                         <td><%= ot.getFechaEmision() != null ? sdf.format(ot.getFechaEmision()) : "-" %></td>
                                         <td><%= fechaFin %></td>
                                         <td>
-                                            <a href="javascript:void(0);" onclick="window.location.href='../EditarOrdenServlet?id=<%= ot.getIdOT() %>'" class="link-action">✏️ Editar</a>
-                                            <a href="javascript:void(0);" onclick="window.location.href='../VerOrdenServlet?id=<%= ot.getIdOT() %>'" class="link-action">👁️ Ver</a>
+                                            <a href="<%= request.getContextPath() %>/EditarOrdenServlet?id=<%= ot.getIdOT() %>" class="link-action">✏️ Editar</a>
+                                            <a href="<%= request.getContextPath() %>/VerOrdenServlet?id=<%= ot.getIdOT() %>" class="link-action">👁️ Ver</a>
                                             <a href="javascript:void(0);" onclick="confirmarEliminar('<%= ot.getIdOT() %>')" class="link-action delete">🗑️ Eliminar</a>
                                         </td>
                                     </tr>

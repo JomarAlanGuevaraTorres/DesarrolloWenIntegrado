@@ -558,7 +558,7 @@
                     
                     <!-- Botones de acción -->
                     <div class="form-actions">
-                        <button type="button" class="btn btn-secondary" onclick="window.location.href='ordenes.jsp'">
+                        <button type="button" class="btn btn-secondary" onclick="window.location.href='<%= request.getContextPath() %>/Vistas/ordenes.jsp'">
                             Cancelar
                         </button>
                         <button type="submit" class="btn btn-primary">

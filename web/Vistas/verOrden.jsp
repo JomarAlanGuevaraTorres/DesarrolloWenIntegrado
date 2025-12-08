@@ -10,7 +10,7 @@
     
     OrdenTrabajo orden = (OrdenTrabajo) request.getAttribute("orden");
     if (orden == null) {
-        response.sendRedirect("ordenes.jsp");
+        response.sendRedirect(request.getContextPath() + "/Vistas/ordenes.jsp");
         return;
     }
     
@@ -34,7 +34,7 @@
 <body>
     <div class="container mt-5">
         <div class="mb-4">
-            <a href="ordenes.jsp" class="btn btn-secondary">← Volver a Órdenes</a>
+            <a href="<%= request.getContextPath() %>/Vistas/ordenes.jsp" class="btn btn-secondary">← Volver a Órdenes</a>
         </div>
         
         <div class="detail-card">
@@ -111,8 +111,8 @@
             </div>
             
             <div class="mt-4">
-                <a href="editarOrden.jsp?id=<%= orden.getIdOT() %>" class="btn btn-primary">✏️ Editar</a>
-                <a href="ordenes.jsp" class="btn btn-secondary">Cerrar</a>
+                <a href="<%= request.getContextPath() %>/EditarOrdenServlet?id=<%= orden.getIdOT() %>" class="btn btn-primary">✏️ Editar</a>
+                <a href="<%= request.getContextPath() %>/Vistas/ordenes.jsp" class="btn btn-secondary">Cerrar</a>
             </div>
         </div>
     </div>

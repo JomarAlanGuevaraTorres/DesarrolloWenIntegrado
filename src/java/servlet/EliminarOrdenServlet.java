@@ -29,7 +29,7 @@ public class EliminarOrdenServlet extends HttpServlet {
         
         if (idOT == null || idOT.trim().isEmpty()) {
             session.setAttribute("error", "ID de orden inválido");
-            response.sendRedirect(request.getContextPath() + "/vistas/ordenes.jsp");
+            response.sendRedirect(request.getContextPath() + "/Vistas/ordenes.jsp");
             return;
         }
         
@@ -48,7 +48,7 @@ public class EliminarOrdenServlet extends HttpServlet {
             session.setAttribute("error", "Error al eliminar la orden: " + e.getMessage());
         }
         
-        response.sendRedirect(request.getContextPath() + "/vistas/ordenes.jsp");
+        response.sendRedirect(request.getContextPath() + "/Vistas/ordenes.jsp");
     }
     
     @Override

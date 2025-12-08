@@ -52,8 +52,8 @@ public class RegistrarOrdenServlet extends HttpServlet {
                 fechaEmisionStr == null || fechaEmisionStr.trim().isEmpty() ||
                 diagnostico == null || diagnostico.trim().isEmpty()) {
                 
-                request.setAttribute("error", "Todos los campos obligatorios deben ser completados");
-                request.getRequestDispatcher("Vistas/registrarOrden.jsp?id=").forward(request, response);
+                session.setAttribute("error", "Todos los campos obligatorios deben ser completados");
+                response.sendRedirect(request.getContextPath() + "/Vistas/registrarOrden.jsp");
                 return;
             }
             
@@ -93,25 +93,25 @@ public class RegistrarOrdenServlet extends HttpServlet {
             if (registrado) {
                 // Éxito - redirigir con mensaje
                 session.setAttribute("mensaje", "Orden de trabajo registrada exitosamente");
-                response.sendRedirect(request.getContextPath() + "Vistas/ordenes.jsp?id=");
+                response.sendRedirect(request.getContextPath() + "/Vistas/ordenes.jsp");
             } else {
                 // Error al registrar
-                request.setAttribute("error", "Error al registrar la orden de trabajo. Intente nuevamente.");
-                request.getRequestDispatcher("Vistas/registrarOrden.jsp?id=").forward(request, response);
+                session.setAttribute("error", "Error al registrar la orden de trabajo. Intente nuevamente.");
+                response.sendRedirect(request.getContextPath() + "/Vistas/registrarOrden.jsp");
             }
             
         } catch (NumberFormatException e) {
-            request.setAttribute("error", "Error en los datos numéricos ingresados: " + e.getMessage());
-            request.getRequestDispatcher("Vistas/registrarOrden.jsp?id=").forward(request, response);
+            session.setAttribute("error", "Error en los datos numéricos ingresados: " + e.getMessage());
+            response.sendRedirect(request.getContextPath() + "/Vistas/registrarOrden.jsp");
             
         } catch (ParseException e) {
-            request.setAttribute("error", "Error en el formato de las fechas: " + e.getMessage());
-            request.getRequestDispatcher("Vistas/registrarOrden.jsp?id=").forward(request, response);
+            session.setAttribute("error", "Error en el formato de las fechas: " + e.getMessage());
+            response.sendRedirect(request.getContextPath() + "/Vistas/registrarOrden.jsp");
             
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("error", "Error inesperado: " + e.getMessage());
-            request.getRequestDispatcher("Vistas/registrarOrden.jsp?id=").forward(request, response);
+            session.setAttribute("error", "Error inesperado: " + e.getMessage());
+            response.sendRedirect(request.getContextPath() + "/Vistas/registrarOrden.jsp");
         }
     }
     
@@ -119,6 +119,6 @@ public class RegistrarOrdenServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         // Redirigir al formulario si se accede por GET
-        response.sendRedirect(request.getContextPath() + "Vistas/registrarOrden.jsp?id=");
+        response.sendRedirect(request.getContextPath() + "/Vistas/registrarOrden.jsp");
     }
 }

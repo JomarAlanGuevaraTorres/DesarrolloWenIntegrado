@@ -13,7 +13,7 @@
     
     OrdenTrabajo orden = (OrdenTrabajo) request.getAttribute("orden");
     if (orden == null) {
-        response.sendRedirect("ordenes.jsp");
+        response.sendRedirect(request.getContextPath() + "/Vistas/ordenes.jsp");
         return;
     }
     
@@ -32,14 +32,14 @@
 <body class="bg-light">
     <div class="container mt-5">
         <div class="mb-4">
-            <a href="ordenes.jsp" class="btn btn-secondary">← Volver a Órdenes</a>
+            <a href="<%= request.getContextPath() %>/Vistas/ordenes.jsp" class="btn btn-secondary">← Volver a Órdenes</a>
         </div>
         
         <div class="card shadow-sm">
             <div class="card-body p-4">
                 <h2 class="mb-4">✏️ Editar Orden de Trabajo: <%= orden.getIdOT() %></h2>
                 
-                <form action="../ActualizarOrdenServlet" method="POST">
+                <form action="<%= request.getContextPath() %>/ActualizarOrdenServlet" method="POST">
                     <input type="hidden" name="idOT" value="<%= orden.getIdOT() %>">
                     
                     <div class="row mb-3">
@@ -56,7 +56,7 @@
                         
                         <div class="col-md-6">
                             <label class="form-label fw-bold">Kilometraje <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control" name="kilometrajeActual" value="<%= orden.getKilometraje() %>" required>
+                            <input type="number" class="form-control" name="kilometrajeActual" value="<%= orden.getKilometraje() %>" required min="0">
                         </div>
                     </div>
                     
@@ -99,6 +99,7 @@
                             <option value="">Sin asignar</option>
                             <option value="1" <%= orden.getIdTecnico() == 1 ? "selected" : "" %>>Juan Pérez</option>
                             <option value="2" <%= orden.getIdTecnico() == 2 ? "selected" : "" %>>María López</option>
+                            <option value="3" <%= orden.getIdTecnico() == 3 ? "selected" : "" %>>Roberto Silva</option>
                         </select>
                     </div>
                     
@@ -113,8 +114,8 @@
                     </div>
                     
                     <div class="mt-4">
-                        <button type="submit" class="btn btn-primary">💾 Guardar Cambios</button>
-                        <a href="ordenes.jsp" class="btn btn-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-primary btn-lg">💾 Guardar Cambios</button>
+                        <a href="<%= request.getContextPath() %>/Vistas/ordenes.jsp" class="btn btn-secondary btn-lg">❌ Cancelar</a>
                     </div>
                 </form>
             </div>

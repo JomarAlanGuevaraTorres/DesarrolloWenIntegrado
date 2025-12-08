@@ -70,8 +70,8 @@ public class ActualizarOrdenServlet extends HttpServlet {
                 session.setAttribute("mensaje", "Orden de trabajo actualizada exitosamente");
                 response.sendRedirect(request.getContextPath() + "/Vistas/ordenes.jsp");
             } else {
-                request.setAttribute("error", "Error al actualizar la orden de trabajo");
-                request.getRequestDispatcher("/EditarOrdenServlet?id=" + idOT).forward(request, response);
+                session.setAttribute("error", "Error al actualizar la orden de trabajo");
+                response.sendRedirect(request.getContextPath() + "/EditarOrdenServlet?id=" + idOT);
             }
             
         } catch (Exception e) {
